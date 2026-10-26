@@ -1,0 +1,16 @@
+# Robot Framework / Browser library output
+results/
+output.xml
+log.html
+report.html
+browser/
+playwright-log.txt
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Editors
+.vscode/
+.idea/
