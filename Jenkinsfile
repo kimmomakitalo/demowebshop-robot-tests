@@ -10,8 +10,9 @@ pipeline {
     }
 
     triggers {
-        // Nightly run around 02:00. H spreads the exact minute to avoid load spikes.
-        cron('H 2 * * *')
+        // Check GitHub for new commits every ~5 minutes and run the tests if there are any.
+        // (Polling, because GitHub webhooks cannot reach a Jenkins running on localhost.)
+        pollSCM('H/5 * * * *')
     }
 
     parameters {
