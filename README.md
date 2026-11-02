@@ -1,5 +1,7 @@
 # Demo Web Shop – Robot Framework smoke tests
 
+[![Smoke tests](https://github.com/kimmomakitalo/demowebshop-robot-tests/actions/workflows/smoke.yml/badge.svg)](https://github.com/kimmomakitalo/demowebshop-robot-tests/actions/workflows/smoke.yml)
+
 UI smoke tests for https://demowebshop.tricentis.com/ using Robot Framework and the
 Browser library (Playwright). No user account is needed.
 
@@ -18,6 +20,18 @@ rfbrowser init chromium
 .\run.ps1 --test "Home Page Loads"     # one test
 .\run.ps1 --include smoke              # by tag
 ```
+
+### Parallel run (pabot)
+
+```powershell
+$env:PYTHONIOENCODING = 'utf-8'
+pabot --processes 4 --testlevelsplit --outputdir results tests
+```
+
+Measured on a 4-core Intel N95 (headless): sequential 16 s, pabot ×2 22 s, pabot ×4 18 s.
+Each pabot process starts its own Playwright server and browser, so with a suite this short
+the startup cost outweighs the gain. CI therefore runs sequentially; pabot pays off once the
+suite takes minutes.
 
 ## Results
 
@@ -40,6 +54,12 @@ Requirements for the Jenkins agent: Windows, Python with the packages above inst
 `report.html` render inside Jenkins, start Jenkins with
 `-Dhudson.model.DirectoryBrowserSupport.CSP=` (only advisable for a local, non-public instance).
 
+## Continuous integration (GitHub Actions)
+
+[.github/workflows/smoke.yml](.github/workflows/smoke.yml) runs the same suite on GitHub's
+Ubuntu runners on every push to `main`, on pull requests, and manually from the Actions tab.
+The Robot report and log are uploaded as the `robot-results` artifact of each run.
+
 ## Structure
 
 | Path | Purpose |
@@ -47,5 +67,6 @@ Requirements for the Jenkins agent: Windows, Python with the packages above inst
 | `tests/smoke.robot` | Test cases |
 | `resources/common.resource` | Browser setup/teardown, base URL, timeouts |
 | `resources/pages/*.resource` | Locators and keywords per page (header, search, category, cart) |
-| `Jenkinsfile` | CI pipeline definition |
+| `Jenkinsfile` | Jenkins pipeline definition |
+| `.github/workflows/smoke.yml` | GitHub Actions workflow |
 | `run.ps1` | Local run helper |
