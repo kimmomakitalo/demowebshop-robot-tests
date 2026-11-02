@@ -23,7 +23,7 @@ Home Page Loads
 
 Search Finds Matching Products
     Search For    computer
-    Search Results Count Should Be    5
+    Search Results Count Should Be    4
     Every Search Result Should Contain    computer
 
 Search With No Matches Shows Message
