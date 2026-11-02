@@ -5,6 +5,8 @@ log.html
 report.html
 browser/
 playwright-log.txt
+.pabotsuitenames
+pabot_results/
 
 # Python
 __pycache__/
